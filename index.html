@@ -8,14 +8,18 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased; }
-        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
-        .gradient-text { background: linear-gradient(135deg, #0d9488, #4f46e5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #F7F5F2; color: #2D3748; -webkit-font-smoothing: antialiased; }
+        
+        /* 탭 및 레이아웃 스타일 */
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         .tab-button.active { border-bottom: 3px solid #0d9488; color: #0d9488; font-weight: 800; }
-        .chart-container { position: relative; width: 100%; height: 280px; margin: 0 auto; }
-        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        
+        /* 차트 및 인터랙션 스타일 */
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; height: 350px; }
+        .step-content { transition: all 0.3s ease-in-out; max-height: 0; overflow: hidden; opacity: 0; }
+        .step-content.active { max-height: 500px; opacity: 1; padding-top: 1rem; }
+        .step-circle.active { background-color: #f97316 !important; border-color: #f97316 !important; color: white !important; }
     </style>
 </head>
 <body>
@@ -23,40 +27,99 @@
     <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-200">
         <div class="flex overflow-x-auto whitespace-nowrap px-4 py-2 space-x-6 md:justify-center scrollbar-hide">
             <button onclick="showTab('home')" id="btn-home" class="tab-button active py-2 text-sm font-bold text-slate-500 transition-all">홈(정의)</button>
-            <button onclick="showTab('stretching')" id="btn-stretching" class="tab-button py-2 text-sm font-bold text-slate-500 transition-all">스트레칭</button>
             <button onclick="showTab('rom')" id="btn-rom" class="tab-button py-2 text-sm font-bold text-slate-500 transition-all">ROM 운동</button>
+            <button onclick="showTab('stretching')" id="btn-stretching" class="tab-button py-2 text-sm font-bold text-slate-500 transition-all">스트레칭</button>
+            <button onclick="showTab('mobilization')" id="btn-mobilization" class="tab-button py-2 text-sm font-bold text-slate-500 transition-all">관절가동술</button>
             <button onclick="showTab('balance')" id="btn-balance" class="tab-button py-2 text-sm font-bold text-slate-500 transition-all">균형 훈련</button>
+            <button onclick="showTab('resistance')" id="btn-resistance" class="tab-button py-2 text-sm font-bold text-slate-500 transition-all">저항 운동</button>
             <button onclick="showTab('aerobic')" id="btn-aerobic" class="tab-button py-2 text-sm font-bold text-slate-500 transition-all">유산소 운동</button>
         </div>
     </nav>
 
     <div id="home" class="tab-content active">
-        <header class="py-12 px-4 text-center bg-white border-b border-slate-100">
-            <span class="inline-block py-1 px-3 rounded-full bg-teal-100 text-teal-800 text-[10px] font-bold mb-3 uppercase">Exercise Therapy Foundation</span>
-            <h1 class="text-3xl md:text-5xl font-black mb-4"><span class="gradient-text">치료적 운동</span>의 본질</h1>
-            <p class="text-sm text-slate-500 max-w-xl mx-auto">과학적 근거와 임상적 추론을 바탕으로 한 정의와 원리</p>
+        <header class="bg-slate-800 text-white p-8 md:p-12 text-center">
+            <h1 class="text-2xl md:text-4xl font-bold mb-3">신체기능과 장애모델 및 환자 관리 프로세스</h1>
+            <p class="text-slate-300 text-sm md:text-lg">움직임의 요소부터 포괄적인 환자 관리 모델까지</p>
         </header>
 
-        <main class="max-w-5xl mx-auto px-4 py-10 space-y-16">
-            <section>
-                <h2 class="text-xl font-bold mb-6 border-l-4 border-teal-500 pl-3">1. 신체 기능의 6가지 기둥</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                        <div class="chart-container"><canvas id="mainRadarChart"></canvas></div>
+        <main class="max-w-5xl mx-auto p-4 md:p-8 space-y-12">
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold border-l-4 border-teal-500 pl-3 mb-6 text-slate-800">1. 움직임을 위한 신체 요소</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-5 bg-slate-50 rounded-lg border border-slate-200">
+                        <h3 class="font-bold text-teal-700 mb-2">🏗️ 신체 구조 (Physical Structure)</h3>
+                        <p class="text-xs text-gray-500 mb-2">수동적 요소: 뼈, 관절주머니, 인대, 연골 등</p>
+                        <p class="text-sm text-gray-600">해부학적 구조물로, 움직임에 수동적인 영향을 미칩니다.</p>
                     </div>
-                    <div id="info-panel" class="bg-gradient-to-br from-teal-600 to-teal-700 text-white p-6 rounded-2xl shadow-lg transition-all duration-300">
-                        <div class="text-3xl mb-3" id="info-icon">⚖️</div>
-                        <h3 class="text-lg font-bold mb-2" id="info-title">균형 (Balance)</h3>
-                        <p class="text-teal-50 text-xs leading-relaxed" id="info-desc">중력에 대항하여 기저면 내에서 신체 중심을 유지하는 능력입니다.</p>
+                    <div class="p-5 bg-indigo-50 rounded-lg border border-indigo-200">
+                        <h3 class="font-bold text-indigo-700 mb-2">⚡ 신체 기능 (Physical Function)</h3>
+                        <p class="text-xs text-indigo-400 mb-2">능동적 요소: 신경계, 근육계, 심폐계</p>
+                        <p class="text-sm text-gray-600">에너지를 사용하여 스스로 움직임을 만들어내고 조절합니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold border-l-4 border-blue-500 pl-3 mb-6 text-slate-800">2. 신체 기능 요소 시뮬레이터</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="space-y-4 bg-slate-50 p-5 rounded-lg border border-slate-200">
+                        <div>
+                            <label class="flex justify-between text-xs font-bold mb-1">균형 <span id="val-balance" class="text-blue-600">5</span></label>
+                            <input type="range" min="1" max="10" value="5" class="w-full h-1.5 bg-slate-300 rounded-lg appearance-none cursor-pointer" oninput="updateChart('balance', this.value)">
+                        </div>
+                        <div>
+                            <label class="flex justify-between text-xs font-bold mb-1">유연성 <span id="val-flexibility" class="text-blue-600">5</span></label>
+                            <input type="range" min="1" max="10" value="5" class="w-full h-1.5 bg-slate-300 rounded-lg appearance-none cursor-pointer" oninput="updateChart('flexibility', this.value)">
+                        </div>
+                        <div>
+                            <label class="flex justify-between text-xs font-bold mb-1">근수행력 <span id="val-muscle" class="text-blue-600">5</span></label>
+                            <input type="range" min="1" max="10" value="5" class="w-full h-1.5 bg-slate-300 rounded-lg appearance-none cursor-pointer" oninput="updateChart('muscle', this.value)">
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2">
+                        <div class="chart-container"><canvas id="radarSimulator"></canvas></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold border-l-4 border-orange-500 pl-3 mb-8 text-slate-800">3. 환자 관리 프로세스 모델</h2>
+                <div class="relative pl-12 space-y-8">
+                    <div class="absolute left-5 top-2 bottom-2 w-0.5 bg-slate-200"></div>
+                    
+                    <div class="relative cursor-pointer group" onclick="toggleStep('step1')">
+                        <div id="circle-step1" class="absolute -left-10 w-8 h-8 rounded-full bg-white border-2 border-slate-300 flex items-center justify-center font-bold text-slate-400 z-10 step-circle transition-all">1</div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 group-hover:bg-orange-50 transition-colors">
+                            <h3 class="font-bold text-slate-700">검진 (Examination)</h3>
+                            <div id="step1" class="step-content text-sm text-slate-500">병력 청취, 계통 검토, 구체적 검사와 측정 단계입니다.</div>
+                        </div>
+                    </div>
+
+                    <div class="relative cursor-pointer group" onclick="toggleStep('step2')">
+                        <div id="circle-step2" class="absolute -left-10 w-8 h-8 rounded-full bg-white border-2 border-slate-300 flex items-center justify-center font-bold text-slate-400 z-10 step-circle transition-all">2</div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 group-hover:bg-orange-50 transition-colors">
+                            <h3 class="font-bold text-slate-700">진단 및 예후 (Diagnosis & Prognosis)</h3>
+                            <div id="step2" class="step-content text-sm text-slate-500">데이터 해석을 통한 문제 분류 및 최적의 목표를 설정합니다.</div>
+                        </div>
+                    </div>
+
+                    <div class="relative cursor-pointer group" onclick="toggleStep('step3')">
+                        <div id="circle-step3" class="absolute -left-10 w-8 h-8 rounded-full bg-white border-2 border-slate-300 flex items-center justify-center font-bold text-slate-400 z-10 step-circle transition-all">3</div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 group-hover:bg-orange-50 transition-colors">
+                            <h3 class="font-bold text-slate-700">중재 및 성과 (Intervention & Outcome)</h3>
+                            <div id="step3" class="step-content text-sm text-slate-500">실제 치료 서비스를 제공하고 성과를 평가합니다.</div>
+                        </div>
                     </div>
                 </div>
             </section>
         </main>
     </div>
 
-    <div id="stretching" class="tab-content py-20 text-center"><h2 class="text-2xl font-bold">스트레칭 파트 준비 중</h2></div>
     <div id="rom" class="tab-content py-20 text-center"><h2 class="text-2xl font-bold">ROM 운동 파트 준비 중</h2></div>
+    <div id="stretching" class="tab-content py-20 text-center"><h2 class="text-2xl font-bold">스트레칭 파트 준비 중</h2></div>
+    <div id="mobilization" class="tab-content py-20 text-center"><h2 class="text-2xl font-bold">관절가동술 파트 준비 중</h2></div>
     <div id="balance" class="tab-content py-20 text-center"><h2 class="text-2xl font-bold">균형 훈련 파트 준비 중</h2></div>
+    <div id="resistance" class="tab-content py-20 text-center"><h2 class="text-2xl font-bold">저항 운동 파트 준비 중</h2></div>
     <div id="aerobic" class="tab-content py-20 text-center"><h2 class="text-2xl font-bold">유산소 운동 파트 준비 중</h2></div>
 
     <footer class="bg-slate-900 text-slate-500 py-10 text-center text-[10px]">
@@ -64,7 +127,7 @@
     </footer>
 
     <script>
-        // 탭 전환 함수
+        // 탭 전환 시스템
         function showTab(id) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
@@ -73,52 +136,51 @@
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        // 차트 데이터
-        const chartData = [
-            { label: "균형", full: "균형 (Balance)", icon: "⚖️", desc: "중력에 대항하여 기저면 내에서 신체 중심을 유지하는 능력입니다." },
-            { label: "심폐지구력", full: "심폐 지구력 (Endurance)", icon: "🫀", desc: "전신 활동을 장시간 지속할 수 있는 효율성입니다." },
-            { label: "유연성", full: "유연성 (Flexibility)", icon: "🤸", desc: "관절 가동범위 내에서 제한 없이 움직이는 능력입니다." },
-            { label: "근수행력", full: "근수행력 (Muscle Perf.)", icon: "💪", desc: "근력, 파워, 근지구력을 포함하는 총체적 능력입니다." },
-            { label: "신경근조절", full: "신경근 조절 (Neuro)", icon: "🧠", desc: "감각 정보를 통합하여 근육 반응을 만들어내는 능력입니다." },
-            { label: "안정성", full: "안정성 (Stability)", icon: "🧱", desc: "움직임 중 관절을 정렬시키고 자세를 유지하는 능력입니다." }
-        ];
+        // 시뮬레이터 차트 로직
+        let simChart;
+        const chartVals = { balance: 5, flexibility: 5, muscle: 5 };
 
-        // 차트 생성 (반드시 캔버스 ID와 일치해야 함)
-        window.onload = function() {
-            const ctx = document.getElementById('mainRadarChart').getContext('2d');
-            new Chart(ctx, {
+        function initSimChart() {
+            const ctx = document.getElementById('radarSimulator').getContext('2d');
+            simChart = new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: chartData.map(d => d.label),
+                    labels: ['균형', '유연성', '근수행력'],
                     datasets: [{
-                        data: [10, 10, 10, 10, 10, 10],
-                        backgroundColor: 'rgba(13, 148, 136, 0.2)',
-                        borderColor: '#0d9488',
-                        borderWidth: 2,
-                        pointBackgroundColor: '#0d9488'
+                        label: '환자 기능 프로필',
+                        data: [5, 5, 5],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: '#3b82f6',
+                        borderWidth: 2
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: { r: { suggestedMin: 0, suggestedMax: 10, ticks: { display: false } } },
-                    plugins: { legend: { display: false } },
-                    onClick: (e, el) => { if(el[0]) updateInfo(el[0].index); }
+                    scales: { r: { suggestedMin: 0, suggestedMax: 10, ticks: { display: false } } }
                 }
             });
-        };
-
-        function updateInfo(idx) {
-            const d = chartData[idx];
-            const p = document.getElementById('info-panel');
-            p.style.opacity = 0.5;
-            setTimeout(() => {
-                document.getElementById('info-icon').textContent = d.icon;
-                document.getElementById('info-title').textContent = d.full;
-                document.getElementById('info-desc').textContent = d.desc;
-                p.style.opacity = 1;
-            }, 150);
         }
+
+        function updateChart(key, val) {
+            chartVals[key] = parseInt(val);
+            document.getElementById('val-' + key).textContent = val;
+            simChart.data.datasets[0].data = [chartVals.balance, chartVals.flexibility, chartVals.muscle];
+            simChart.update();
+        }
+
+        // 스테퍼 로직
+        function toggleStep(id) {
+            const content = document.getElementById(id);
+            const circle = document.getElementById('circle-' + id);
+            content.classList.toggle('active');
+            circle.classList.toggle('active');
+        }
+
+        window.onload = function() {
+            initSimChart();
+            toggleStep('step1'); // 첫 단계 기본 오픈
+        };
     </script>
 </body>
 </html>
