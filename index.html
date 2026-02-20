@@ -17,11 +17,31 @@
         @media (min-width: 768px) { .chart-container { height: 380px; } }
         .step-content { transition: all 0.3s ease-in-out; max-height: 0; overflow: hidden; opacity: 0; }
         .step-content.active { max-height: 500px; opacity: 1; padding-top: 1rem; }
-        /* 플래시카드 3D 효과 */
-.flip-card { background-color: transparent; perspective: 1000px; height: 180px; }
+       /* 슬라이드 컨테이너 */
+.swipe-container {
+    display: flex;
+    overflow-x: auto;
+    snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+.swipe-container::-webkit-scrollbar { display: none; } /* 스크롤바 숨김 */
+
+.card-wrapper {
+    flex: 0 0 90%; /* 카드 너비 90% */
+    snap-align: center;
+    padding: 10px;
+}
+
+/* 플래시카드 대형화 및 효과 */
+.flip-card { background-color: transparent; perspective: 1000px; height: 320px; } /* 높이 확대 */
 .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; cursor: pointer; }
 .flip-card.active .flip-card-inner { transform: rotateY(180deg); }
-.flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 1rem; display: flex; align-items: center; justify-content: center; padding: 1.2rem; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+.flip-card-front, .flip-card-back { 
+    position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; 
+    border-radius: 1.5rem; display: flex; align-items: center; justify-content: center; padding: 2rem; text-align: center;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); 
+}
 .flip-card-back { transform: rotateY(180deg); }
     </style>
 </head>
@@ -201,45 +221,80 @@
             </div>
         </section>
 
-        <section>
-            <h2 class="text-lg font-bold mb-4 border-l-4 border-amber-500 pl-3">🎓 스트레칭 핵심 요약 (Flashcards)</h2>
-            <p class="text-xs text-slate-500 mb-6 italic">교수님이 강조하신 핵심 내용을 카드를 뒤집어 확인해보세요.</p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="flip-card" onclick="this.classList.toggle('active')">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front bg-white border border-stone-200"><p class="font-bold text-stone-800 text-sm">스트레칭(Stretching)의 정의</p></div>
-                        <div class="flip-card-back bg-teal-600 text-white"><p class="text-[11px] leading-relaxed">연부조직의 유연성을 증가시키기 위해 신체 분절을 가동범위 이상으로 신장시키는 기법</p></div>
+<section class="py-8">
+    <h2 class="text-xl md:text-2xl font-bold mb-2 border-l-4 border-amber-500 pl-3">🎓 스트레칭 핵심 요약 (Slide)</h2>
+    <p class="text-sm text-slate-500 mb-6">옆으로 밀어서 다음 카드를 확인하고, 클릭하여 정답을 보세요.</p>
+    
+    <div class="swipe-container space-x-4">
+        
+        <div class="card-wrapper">
+            <div class="flip-card" onclick="this.classList.toggle('active')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front bg-white border-2 border-stone-200">
+                        <p class="text-2xl md:text-3xl font-black text-stone-800">스트레칭(Stretching)의 정의</p>
                     </div>
-                </div>
-                <div class="flip-card" onclick="this.classList.toggle('active')">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front bg-white border border-stone-200"><p class="font-bold text-stone-800 text-sm">유연성(Flexibility)의 정의</p></div>
-                        <div class="flip-card-back bg-teal-600 text-white"><p class="text-[11px] leading-relaxed">관절 가동범위(ROM) 내에서 제한 없이 원활하게 움직일 수 있는 능력</p></div>
-                    </div>
-                </div>
-                <div class="flip-card" onclick="this.classList.toggle('active')">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front bg-white border border-stone-200"><p class="font-bold text-stone-800 text-sm">스트레칭의 주요 목적 4가지</p></div>
-                        <div class="flip-card-back bg-amber-500 text-white"><p class="text-[11px] leading-relaxed">가동범위 회복, 구축(Contracture) 예방, 부상 방지, 통증 감소</p></div>
-                    </div>
-                </div>
-                <div class="flip-card" onclick="this.classList.toggle('active')">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front bg-white border border-stone-200"><p class="font-bold text-stone-800 text-sm">근방추(Muscle Spindle)가 감지하는 것</p></div>
-                        <div class="flip-card-back bg-indigo-600 text-white"><p class="text-[11px] leading-relaxed">근육의 길이 변화와 그 변화 속도</p></div>
-                    </div>
-                </div>
-                <div class="flip-card" onclick="this.classList.toggle('active')">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front bg-white border border-stone-200"><p class="font-bold text-stone-800 text-sm">신장 반사(Stretch Reflex)란?</p></div>
-                        <div class="flip-card-back bg-red-500 text-white"><p class="text-[11px] leading-relaxed">근육이 갑자기 늘어날 때 보호 차원에서 해당 근육을 반사적으로 수축시키는 현상</p></div>
+                    <div class="flip-card-back bg-teal-600 text-white">
+                        <p class="text-xl md:text-2xl font-bold leading-relaxed">연부조직의 유연성을 증가시키기 위해 신체 분절을 가동범위 이상으로 신장시키는 기법</p>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
-</div>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="flip-card" onclick="this.classList.toggle('active')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front bg-white border-2 border-stone-200">
+                        <p class="text-2xl md:text-3xl font-black text-stone-800">유연성(Flexibility)의 정의</p>
+                    </div>
+                    <div class="flip-card-back bg-teal-600 text-white">
+                        <p class="text-xl md:text-2xl font-bold leading-relaxed">관절 가동범위(ROM) 내에서 제한 없이 원활하게 움직일 수 있는 능력</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="flip-card" onclick="this.classList.toggle('active')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front bg-white border-2 border-stone-200">
+                        <p class="text-2xl md:text-3xl font-black text-stone-800">스트레칭의 주요 목적 4가지</p>
+                    </div>
+                    <div class="flip-card-back bg-amber-500 text-white">
+                        <p class="text-xl md:text-2xl font-bold leading-relaxed">가동범위 회복, 구축 예방, 부상 방지, 통증 감소</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="flip-card" onclick="this.classList.toggle('active')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front bg-white border-2 border-stone-200">
+                        <p class="text-2xl md:text-3xl font-black text-stone-800">근방추(Muscle Spindle)가 감지하는 것</p>
+                    </div>
+                    <div class="flip-card-back bg-indigo-600 text-white">
+                        <p class="text-xl md:text-2xl font-bold leading-relaxed">근육의 길이 변화와 그 변화 속도</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="flip-card" onclick="this.classList.toggle('active')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front bg-white border-2 border-stone-200">
+                        <p class="text-2xl md:text-3xl font-black text-stone-800">신장 반사(Stretch Reflex)란?</p>
+                    </div>
+                    <div class="flip-card-back bg-red-500 text-white">
+                        <p class="text-xl md:text-2xl font-bold leading-relaxed">근육이 갑자기 늘어날 때 보호 차원에서 해당 근육을 반사적으로 수축시키는 현상</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <p class="text-center text-slate-400 text-xs mt-4">좌우로 스와이프 하세요 ↔️</p>
+</section>
     
     <div id="mobilization" class="tab-content py-20 text-center"><h2 class="text-2xl font-bold">관절가동술 파트 준비 중</h2></div>
     <div id="balance" class="tab-content py-20 text-center"><h2 class="text-2xl font-bold">균형 훈련 파트 준비 중</h2></div>
@@ -378,6 +433,7 @@ function triggerReflex(type) {
 </script>
 </body>
 </html>
+
 
 
 
