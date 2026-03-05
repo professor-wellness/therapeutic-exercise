@@ -192,6 +192,55 @@
                     </div>
                 </div>
             </section>
+
+            <section class="py-8">
+    <h2 class="text-lg md:text-xl font-bold mb-2 border-l-4 border-emerald-500 pl-3">6. 플래시카드 복습</h2>
+    <p class="text-xs md:text-sm text-slate-500 mb-6">카드를 클릭하면 뒷면으로 넘어갑니다. 옆으로 밀어서 다음 카드를 확인하세요.</p>
+
+    <div class="swipe-container space-x-4">
+        <div class="card-wrapper">
+            <div class="flip-card" onclick="this.classList.toggle('active')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front bg-white border-2 border-slate-200">
+                        <p class="text-2xl md:text-3xl font-black text-slate-800">1. 뼈의 기능</p>
+                    </div>
+                    <div class="flip-card-back bg-emerald-600 text-white">
+                        <p class="text-xl md:text-2xl font-bold leading-relaxed">틀 형성, 지레 역할</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="flip-card" onclick="this.classList.toggle('active')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front bg-white border-2 border-slate-200">
+                        <p class="text-2xl md:text-3xl font-black text-slate-800">2. 연골 기능</p>
+                    </div>
+                    <div class="flip-card-back bg-emerald-600 text-white">
+                        <p class="text-xl md:text-2xl font-bold leading-relaxed">관절면 보호</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-wrapper">
+            <div class="flip-card" onclick="this.classList.toggle('active')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front bg-white border-2 border-slate-200">
+                        <p class="text-2xl md:text-3xl font-black text-slate-800">3. 인대 기능</p>
+                    </div>
+                    <div class="flip-card-back bg-emerald-600 text-white">
+                        <p class="text-xl md:text-2xl font-bold leading-relaxed">과가동성 제한</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="text-center text-slate-400 text-xs mt-4">좌우로 스와이프 하세요 ↔️</p>
+</section>
+            
        </main>
     </div>
 
@@ -310,5 +359,6 @@
 </script>
 </body>
 </html>
+
 
 
