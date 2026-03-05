@@ -18,11 +18,11 @@
         @media (min-width: 768px) { .chart-container { height: 380px; } }
         .step-content { transition: all 0.3s ease-in-out; max-height: 0; overflow: hidden; opacity: 0; }
         .step-content.active { max-height: 500px; opacity: 1; padding-top: 1rem; }
-       /* 슬라이드 컨테이너 */
+/* 슬라이드 컨테이너 */
 .swipe-container {
     display: flex;
     overflow-x: auto;
-    snap-type: x mandatory;
+    scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
 }
@@ -30,7 +30,7 @@
 
 .card-wrapper {
     flex: 0 0 90%; /* 카드 너비 90% */
-    snap-align: center;
+    scroll-snap-align: center;
     padding: 10px;
 }
 
@@ -359,6 +359,7 @@
 </script>
 </body>
 </html>
+
 
 
 
